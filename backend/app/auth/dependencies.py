@@ -13,7 +13,11 @@ def current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_
     subject = decode_token(token)
     if not subject:
         raise api_error("UNAUTHORIZED", "Invalid or expired token", 401)
-    user = db.query(User).filter(User.id == int(subject), User.deleted_at.is_(None)).first()
+    try:
+        user_id = int(subject)
+    except (TypeError, ValueError):
+        raise api_error("UNAUTHORIZED", "Invalid or expired token", 401)
+    user = db.query(User).filter(User.id == user_id, User.deleted_at.is_(None)).first()
     if not user:
         raise api_error("UNAUTHORIZED", "User not found", 401)
     return user

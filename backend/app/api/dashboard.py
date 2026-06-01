@@ -16,6 +16,7 @@ def dashboard(db: Session = Depends(get_db), user: User = Depends(current_user))
     orders = db.query(Order).filter(Order.deleted_at.is_(None))
     low_stock = products.filter(Product.quantity <= Product.low_stock_threshold).order_by(Product.quantity.asc()).limit(5).all()
     inventory_value = db.query(func.coalesce(func.sum(Product.quantity * Product.unit_price), 0)).filter(Product.deleted_at.is_(None)).scalar()
+    revenue = db.query(func.coalesce(func.sum(Order.total_amount), 0)).filter(Order.deleted_at.is_(None)).scalar()
     recent_orders = (
         orders.options(joinedload(Order.customer), joinedload(Order.items).joinedload(OrderItem.product))
         .order_by(Order.created_at.desc())
@@ -26,6 +27,7 @@ def dashboard(db: Session = Depends(get_db), user: User = Depends(current_user))
         "total_products": products.count(),
         "total_customers": customers.count(),
         "total_orders": orders.count(),
+        "revenue": revenue,
         "inventory_value": inventory_value,
         "low_stock_products": low_stock,
         "recent_orders": recent_orders,

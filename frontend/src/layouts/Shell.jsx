@@ -1,5 +1,6 @@
 import { BarChart3, Boxes, LogOut, ReceiptText, Users } from 'lucide-react';
 import { useAuth } from '../features/auth/AuthContext.jsx';
+import { Brand } from '../components/Brand.jsx';
 
 const nav = [
   { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
@@ -13,9 +14,8 @@ export function Shell({ route, setRoute, children }) {
   return (
     <div className="shell">
       <aside className="sidebar">
-        <button className="brand" onClick={() => setRoute('dashboard')} aria-label="Go to dashboard">
-          <span className="brand-mark">S</span>
-          <span>Stockroom</span>
+        <button className="brand-button" onClick={() => setRoute('dashboard')} aria-label="Go to dashboard">
+          <Brand tone="light" showTagline />
         </button>
         <nav>
           {nav.map((item) => {
@@ -29,6 +29,7 @@ export function Shell({ route, setRoute, children }) {
           })}
         </nav>
         <div className="user-panel">
+          <div className="avatar">{user.name?.charAt(0) || 'S'}</div>
           <div>
             <strong>{user.name}</strong>
             <small>{user.email}</small>

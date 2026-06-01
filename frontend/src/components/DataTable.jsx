@@ -9,6 +9,7 @@ export function DataTable({ columns, rows, loading, empty, sort, direction, onSo
           <Search size={16} />
           <input value={search} onChange={(event) => { setPage(1); setSearch(event.target.value); }} placeholder="Search" />
         </div>
+        <span className="table-count">{total || 0} records</span>
       </div>
       <div className="table-scroll">
         <table>
@@ -36,12 +37,11 @@ export function DataTable({ columns, rows, loading, empty, sort, direction, onSo
           </tbody>
         </table>
       </div>
-      {!loading && rows.length === 0 && <div className="empty-state">{empty}</div>}
+      {!loading && rows.length === 0 && <div className="empty-state"><img src="/brand/stockroom-mark.png" alt="" /><strong>{empty}</strong><small>Adjust search or add a new record to continue.</small></div>}
       <footer className="pagination">
-        <span>{total || 0} records</span>
+        <span>Page {page} of {pages}</span>
         <div>
           <button disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</button>
-          <span>{page} / {pages}</span>
           <button disabled={page >= pages} onClick={() => setPage(page + 1)}>Next</button>
         </div>
       </footer>

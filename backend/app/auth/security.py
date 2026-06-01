@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta, timezone
+from uuid import uuid4
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from app.core.config import get_settings
@@ -17,8 +18,16 @@ def verify_password(password: str, hashed: str) -> bool:
 
 def create_access_token(subject: str) -> str:
     settings = get_settings()
-    expires = datetime.now(timezone.utc) + timedelta(minutes=settings.access_token_minutes)
-    return jwt.encode({"sub": subject, "exp": expires}, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+    issued_at = datetime.now(timezone.utc)
+    expires = issued_at + timedelta(minutes=settings.access_token_minutes)
+    payload = {
+        "sub": subject,
+        "iat": issued_at,
+        "nbf": issued_at,
+        "exp": expires,
+        "jti": str(uuid4()),
+    }
+    return jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
 
 
 def decode_token(token: str) -> str | None:
