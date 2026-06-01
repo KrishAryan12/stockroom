@@ -403,7 +403,11 @@ npm run dev
 
 Frontend: `http://localhost:5173`
 
-If the backend is not running on `http://localhost:8000`, set `VITE_API_URL` before starting Vite.
+The frontend calls same-origin `/api` by default. In Vite development, `frontend/vite.config.js` proxies `/api` and `/health` to `http://localhost:8000`, so local development does not require browser CORS for normal API calls.
+
+If the frontend and backend are deployed on different origins, set `VITE_API_URL` to the public backend origin before building or starting the frontend, for example `https://stockroom-api.example.com`. Also set backend `CORS_ORIGINS` to the exact public frontend origin, for example `https://stockroom.example.com`.
+
+For Docker Compose, leave `VITE_API_URL` blank. The frontend Nginx container proxies `/api` to the backend service over the Compose network, avoiding browser CORS and avoiding hard-coded localhost calls.
 
 ## Environment Variables
 
@@ -415,7 +419,7 @@ If the backend is not running on `http://localhost:8000`, set `VITE_API_URL` bef
 | `DATABASE_URL` | `postgresql+psycopg://postgres:postgres@postgres:5432/stockroom` | Backend database connection |
 | `JWT_SECRET` | `replace-with-a-long-random-secret` | JWT signing secret |
 | `CORS_ORIGINS` | `http://localhost:5173,http://localhost:8080` | Allowed frontend origins |
-| `VITE_API_URL` | `http://localhost:8000` | Frontend API base URL |
+| `VITE_API_URL` | blank | Optional public backend origin for split frontend/backend deployments |
 | `SEED_DEMO_DATA` | `true` | Seed deterministic demo data on backend startup |
 
 ## Testing
