@@ -20,6 +20,25 @@ Stockroom is a production-minded full-stack inventory system built for day-to-da
 
 The project is intentionally more than a CRUD demo. It includes a branded React interface, a modular FastAPI API, Alembic migrations, Dockerized services, deterministic demo data, and an integration-style pytest suite that exercises the same PostgreSQL behavior used by the app.
 
+## Live Demo
+
+| Resource | Link |
+| --- | --- |
+| Frontend | https://stockroom-fv47.onrender.com/ |
+| Backend API | https://stockroom-api-yvum.onrender.com/docs |
+| Docker Image | https://hub.docker.com/repository/docker/krisharyan12/stockroom/general |
+| GitHub | https://github.com/KrishAryan12/stockroom |
+
+## Quick Evaluation Guide
+
+1. Open the frontend URL.
+2. Register a new user.
+3. Log in.
+4. Create inventory items.
+5. Update inventory items.
+6. Delete inventory items.
+7. Open Swagger Docs for API testing.
+
 ## Live Product Experience
 
 Stockroom opens into a branded SaaS workspace with:
